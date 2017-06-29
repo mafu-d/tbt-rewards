@@ -28,3 +28,12 @@ Another reason for using Laravel is its default mail architecture uses an API on
 We will use the same login form as the customer, with administrators being identified by a flag in the database for authorisation. A default admin account will be seeded during development/deployment. A future recommendation would be to allow administrators to add further administrator accounts, or set existing users as administrators; we will build the solution with this in mind, even if it is not developed initially.
 
 Emphasis will primarily be on reviewing claims from the web interface, allowing admins to view the full details of each claim easily and download individual attachments. There will also be the option to download all claims in CSV format. Since there are an unlimited number of attachments for each entry, it is proposed to provide a single link in the CSV file that will download all attachments for that claim as a zip file; we will need an endpoint that accepts a reference to the entry ID, zips all relevant files and immediately sends it as a download.
+
+## Development
+
+- XAMPP, with alias pointing to project_root/src/public/
+- Git
+- Run `composer install`
+- Run `npm install`
+- If gulp is not already installed, run `npm install --global gulp`
+- To compile SASS, run `gulp sass`

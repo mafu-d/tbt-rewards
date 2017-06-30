@@ -27,6 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+    * Each user can have multiple claims
+    */
     public function claims() {
         return $this->hasMany('App\Claim');
     }

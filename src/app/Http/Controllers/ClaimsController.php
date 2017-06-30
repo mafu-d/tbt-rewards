@@ -48,6 +48,15 @@ class ClaimsController extends Controller
         $claim = \App\Claim::findOrFail($request->get('id'));
         $claim->company = $request->get('company');
         $claim->address1 = $request->get('address1');
+        $claim->address2 = $request->get('address2');
+        $claim->city = $request->get('city');
+        $claim->county = $request->get('county');
+        $claim->postcode = $request->get('postcode');
+        $claim->country = $request->get('country');
+        $claim->phone = $request->get('phone');
+        $claim->part_number = $request->get('part_number');
+        $claim->part_quantity = $request->get('part_quantity');
+        $claim->reward_preference =$request->get('reward_preference');
         $claim->save();
         return redirect(action('ClaimsController@claimForm', ['id' => $request->get('id')]));
     }

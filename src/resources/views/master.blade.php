@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar-menu"><span class="glyphicon glyphicon-menu-hamburger"></span></button>
-                <a href="#" class="navbar-brand">Lenovo Rewards Centre</a>
+                <a href="{{ url('/') }}" class="navbar-brand">Lenovo Rewards Centre</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav navbar-right">
@@ -33,8 +33,18 @@
     </nav>
 
     <div class="container">
-        <h1>This is a test page</h1>
-        <p>Here is some content. <span class="glyphicon glyphicon-ok"></span></p>
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+        @endif
+
+        @yield('content')
     </div>
 
     <script src="{{ asset('js/jquery.min.js') }}" charset="utf-8"></script>

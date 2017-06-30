@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SubmissionConfirmation;
 
 class ClaimsController extends Controller
 {
@@ -105,10 +107,13 @@ class ClaimsController extends Controller
         if ($claim->status !== 1) {
             return back()->withErrors(['msg' => 'Claim not ready for processing']);
         }
+        // Send confirmation email to the user
+        Mail::to($claim->user->email)->send(new SubmissionConfirmation($claim));
         // Update the status
         $claim->status = 2;
         $claim->save();
         // Go back to the dashboard
+        $request->session()->flash('status', 'Claim submitted successfully!');
         return redirect(action('ClaimsController@index'));
     }
 }

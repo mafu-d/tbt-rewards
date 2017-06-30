@@ -17,4 +17,9 @@ class Claim extends Model
     public function status() {
         return self::$statusTexts[$this->status];
     }
+
+    // Each claim has one user (creator)
+    public function user() {
+        return $this->hasOne('\App\User', 'id', 'user_id');
+    }
 }

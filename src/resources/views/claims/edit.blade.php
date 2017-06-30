@@ -10,6 +10,10 @@
             <input type="hidden" name="id" value="{{ $claim->id }}">
         </p>
         <p>
+            <label for="status">Status</label>
+            {{ $claim->status() }}
+        </p>
+        <p>
             <label for="company">Company you are claiming on behalf of</label>
             <input type="text" class="form-control" id="company" name="company" value="{{ $claim->company }}">
         </p>
@@ -64,4 +68,11 @@
             <button class="btn btn-primary" type="submit">Save</button>
         </p>
     </form>
+    @if ($claim->status === 1)
+        <form action="{{ action('ClaimsController@submit') }}" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="id" value="{{ $claim->id }}">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    @endif
 @endsection

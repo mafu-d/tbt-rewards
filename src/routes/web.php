@@ -23,4 +23,5 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', 'ClaimsController@index')->name('home');
     Route::get('/claim/edit/{id?}', 'ClaimsController@claimForm');
     Route::post('/claim/save', 'ClaimsController@save');
+    Route::post('/claim/submit', 'ClaimsController@submit');
 });

@@ -55,7 +55,16 @@ class ClaimsController extends Controller
         $this->validate($request, [
             'id' => 'required|integer|exists:claims,id',
             'company' => 'nullable|min:3',
-            'address1' => 'nullable|min:3'
+            'address1' => 'nullable|min:3',
+            'address2' => 'nullable|min:3',
+            'city' => 'nullable|min:2',
+            'county' => 'nullable|min:3',
+            'postcode' => 'nullable|min:5|max:8',
+            'country' => 'nullable|in:UK,IE',
+            'phone' => 'nullable|regex:/[0-9 \+\(\)]+/|min:10',
+            'part_number' => 'nullable|integer',
+            'part_quantity' => 'nullable|integer|min:10',
+            'reward_preference' => 'nullable|in:1,2,3'
         ]);
         // Get the claim
         $claim = \App\Claim::findOrFail($request->get('id'));
@@ -71,8 +80,35 @@ class ClaimsController extends Controller
         $claim->part_number = $request->get('part_number');
         $claim->part_quantity = $request->get('part_quantity');
         $claim->reward_preference =$request->get('reward_preference');
+        // Check submission validity
+        if ($claim->company && $claim->address1 && $claim->city && $claim->county && $claim->country && $claim->phone && $claim->part_number && $claim->part_quantity && $claim->reward_preference) {
+            $claim->status = 1;
+        }
+        else {
+            $claim->status = 0;
+        }
         $claim->save();
         // Redirect back to the form
         return redirect(action('ClaimsController@claimForm', ['id' => $request->get('id')]));
+    }
+
+    /**
+    * Submit the claim for processing
+    **/
+    public function submit(Request $request) {
+        // Validate inputs
+        $this->validate($request, [
+            'id' => 'required|exists:claims,id'
+        ]);
+        // Check the claim is actually ready for submission
+        $claim = \App\Claim::findOrFail($request->get('id'));
+        if ($claim->status !== 1) {
+            return back()->withErrors(['msg' => 'Claim not ready for processing']);
+        }
+        // Update the status
+        $claim->status = 2;
+        $claim->save();
+        // Go back to the dashboard
+        return redirect(action('ClaimsController@index'));
     }
 }

@@ -37,3 +37,9 @@ Emphasis will primarily be on reviewing claims from the web interface, allowing 
 - Run `npm install`
 - If gulp is not already installed, run `npm install --global gulp`
 - To compile SASS, run `gulp sass`
+
+## Recommendations for future development
+
+- Define companies in their own database table for easy re-use. Users would associate themselves with a company, searching by name and creating the company if it doesn't already exist. This allows for multiple users per company, and means users don't need to enter the company details each time they make a claim.
+- Allow administrators to define the reward options from the website, rather than using a hard-coded list.
+- Allow administrators to approve/decline a claim, with feedback being emailed to the user with the reason(s).

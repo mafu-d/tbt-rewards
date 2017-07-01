@@ -16,4 +16,9 @@ class Upload extends Model
         unlink(storage_path('app/') . $this->filename);
         parent::delete();
     }
+
+    // Friendly display of file name
+    public function name() {
+        return preg_replace('/^uploads\/[0-9]+_/', '', $this->filename);
+    }
 }

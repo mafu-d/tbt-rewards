@@ -48,7 +48,7 @@
                 <td>
                     <ul>
                         @foreach ($claim->uploads as $upload)
-                            <li><a href="#">{{ $upload->filename }}</a></li>
+                            <li><a href="#">{{ $upload->name() }}</a></li>
                         @endforeach
                     </ul>
                 </td>

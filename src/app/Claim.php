@@ -22,4 +22,9 @@ class Claim extends Model
     public function user() {
         return $this->hasOne('\App\User', 'id', 'user_id');
     }
+
+    // Each claim can have multiple uploads
+    public function uploads() {
+        return $this->hasMany('\App\Upload', 'claim_id', 'id');
+    }
 }

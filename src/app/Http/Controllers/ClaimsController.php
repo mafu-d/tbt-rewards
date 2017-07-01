@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SubmissionConfirmation;
+use App\Upload;
 
 class ClaimsController extends Controller
 {
@@ -82,6 +83,23 @@ class ClaimsController extends Controller
         $claim->part_number = $request->get('part_number');
         $claim->part_quantity = $request->get('part_quantity');
         $claim->reward_preference =$request->get('reward_preference');
+        // Handle file upload if requested
+        if ($request->hasFile('file')) {
+            // Delete if already exists with that filename
+            if (file_exists(storage_path('app/public/uploads') . $request->file->getClientOriginalName())) {
+                unlink(storage_path('app/public/uploads') . $request->file->getClientOriginalName());
+            }
+            // Store the new file
+            $path = $request->file->storeAs('uploads', $claim->id . '_' . $request->file->getClientOriginalName());
+            // Add the new file to the claim if it doesn't already exist
+            $upload = Upload::where('filename', '=', $path);
+            if (!$upload->count()) {
+                $upload = new Upload();
+                $upload->claim_id = $claim->id;
+                $upload->filename = $path;
+                $upload->save();
+            }
+        }
         // Check submission validity
         if ($claim->company && $claim->address1 && $claim->city && $claim->county && $claim->country && $claim->phone && $claim->part_number && $claim->part_quantity && $claim->reward_preference) {
             $claim->status = 1;

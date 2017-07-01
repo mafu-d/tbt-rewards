@@ -145,4 +145,18 @@ class ClaimsController extends Controller
         $request->session()->flash('status', 'Claim submitted successfully!');
         return redirect(action('ClaimsController@index'));
     }
+
+    /**
+    * Allow an administrator to view the details of a claim
+    **/
+    public function view($id) {
+        // Check for admin
+        if (Auth::user()->status !== 1) {
+            return back()->withErrors(['msg' => 'Not available']);
+        }
+        // Find claim
+        $claim = Claim::findOrFail($id);
+        // Show it
+        return view('claims.view')->with('claim', $claim);
+    }
 }

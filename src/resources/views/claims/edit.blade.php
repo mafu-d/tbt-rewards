@@ -61,9 +61,9 @@
                 <p>
                     <label for="reward_preference">Preferred reward</label>
                     <select name="reward_preference" id="reward_preference" class="form-control">
-                        <option value="1" {{ $claim->reward_preference === '1' ? 'selected' : '' }}>&pound;250 Amazon vouchers</option>
-                        <option value="2" {{ $claim->reward_preference === '2' ? 'selected' : '' }}>London Theatre Weekend voucher</option>
-                        <option value="3" {{ $claim->reward_preference === '3' ? 'selected' : '' }}>Lenovo Tab3 10 Business Tablet</option>
+                        @foreach (\App\Claim::$reward_preferences as $key => $value)
+                            <option value="{{ $key }}" {{ $claim->reward_preference == $key ? 'selected' : '' }}>{{ $value }}</option>
+                        @endforeach
                     </select>
                 </p>
                 <p>

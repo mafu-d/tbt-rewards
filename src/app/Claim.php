@@ -13,6 +13,12 @@ class Claim extends Model
         2 => 'Submitted',
         3 => 'Accepted'
     ];
+    public static $reward_preferences = [
+        '&pound;250 Amazon vouchers',
+        'London Theatre Weekend voucher',
+        'Lenovo Tab3 10 Business Tablet'
+    ];
+    
     // Check current status
     public function status() {
         return self::$statusTexts[$this->status];

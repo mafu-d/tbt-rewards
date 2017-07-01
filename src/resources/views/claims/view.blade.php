@@ -40,6 +40,10 @@
                 <td>{{ $claim->part_quantity }}</td>
             </tr>
             <tr>
+                <th>Preferred reward</th>
+                <td>{{ \App\Claim::$reward_preferences[$claim->reward_preference] }}</td>
+            </tr>
+            <tr>
                 <th>Attachments</th>
                 <td>
                     <ul>

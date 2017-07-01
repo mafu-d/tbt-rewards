@@ -18,6 +18,8 @@
     "lodash": "^4.17.4",
     "vue": "^2.1.10",
     "gulp": "*",
-    "gulp-sass": "*"
+    "gulp-sass": "*",
+    "gulp-uglify": "*",
+    "gulp-rename": "*"
   }
 }

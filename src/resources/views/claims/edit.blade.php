@@ -72,8 +72,9 @@
             </div>
             <div class="col-md-4">
                 <h4>Upload supporting documents</h4>
+                <input type="hidden" name="removeUpload" value="">
                 @foreach ($claim->uploads as $upload)
-                    <p>{{ preg_replace('/^uploads\/[0-9]+_/', '', $upload->filename) }}</p>
+                    <p><button class="btn btn-danger btn-xs remove-upload-btn" data-id="{{ $upload->id }}"><span class="glyphicon glyphicon-remove"></span></button> {{ preg_replace('/^uploads\/[0-9]+_/', '', $upload->filename) }}</p>
                 @endforeach
                 <p>
                     <label class="btn btn-primary" for="my-file-selector">

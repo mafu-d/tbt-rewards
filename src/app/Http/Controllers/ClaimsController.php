@@ -83,6 +83,10 @@ class ClaimsController extends Controller
         $claim->part_number = $request->get('part_number');
         $claim->part_quantity = $request->get('part_quantity');
         $claim->reward_preference =$request->get('reward_preference');
+        // Remove file if necessary
+        if ($request->get('removeUpload')) {
+            Upload::findOrFail($request->get('removeUpload'))->delete();
+        }
         // Handle file upload if requested
         if ($request->hasFile('file')) {
             // Delete if already exists with that filename

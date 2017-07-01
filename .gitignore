@@ -6,3 +6,5 @@ src/public/fonts/bootstrap/
 src/public/js/bootstrap\.min\.js
 
 src/public/js/jquery\.min\.js
+
+src/public/js/app\.min\.js

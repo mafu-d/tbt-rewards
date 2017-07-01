@@ -10,4 +10,10 @@ class Upload extends Model
     public function claim() {
         return $this->belongsTo('\App\Claim');
     }
+
+    // Extend delete function to remove file as well
+    public function delete() {
+        unlink(storage_path('app/') . $this->filename);
+        parent::delete();
+    }
 }

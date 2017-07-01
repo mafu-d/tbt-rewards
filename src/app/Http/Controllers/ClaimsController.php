@@ -159,4 +159,18 @@ class ClaimsController extends Controller
         // Show it
         return view('claims.view')->with('claim', $claim);
     }
+
+    /**
+    * Download a single attachment
+    **/
+    public function downloadSingle($id) {
+        // Check for admin
+        if (Auth::user()->status !== 1) {
+            return back()->withErrors(['msg' => 'Not available']);
+        }
+        // Find upload
+        $upload = Upload::findOrFail($id);
+        // Return it as a download
+        return response()->download(storage_path('app/') . $upload->filename);
+    }
 }

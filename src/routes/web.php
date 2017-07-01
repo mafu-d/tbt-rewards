@@ -28,4 +28,5 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/claim/save', 'ClaimsController@save');
     Route::post('/claim/submit', 'ClaimsController@submit');
     Route::get('/claim/view/{id}', 'ClaimsController@view');
+    Route::get('/attachment/{id}', 'ClaimsController@downloadSingle');
 });

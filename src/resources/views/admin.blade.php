@@ -2,6 +2,7 @@
 
 @section('content')
     <h1>Administration</h1>
+    <p><a href="{{ action('ClaimsController@downloadClaims') }}" class="btn btn-primary">Download all claims</a></p>
     <table class="table table-striped table-hover">
         <thead>
             <tr>

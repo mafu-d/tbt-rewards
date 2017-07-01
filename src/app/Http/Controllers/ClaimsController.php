@@ -173,4 +173,41 @@ class ClaimsController extends Controller
         // Return it as a download
         return response()->download(storage_path('app/') . $upload->filename);
     }
+
+    /**
+    * Download all claims as CSV file
+    **/
+    public function downloadClaims() {
+        // Check for admin
+        if (Auth::user()->status !== 1) {
+            return back()->withErrors(['msg' => 'Not available']);
+        }
+        // Get all claims
+        $claims = Claim::all();
+        // Export as CSV download
+        $csv = \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne([
+            'Claim ID',
+            'Name', 'Email address',
+            'Company',
+            'Address line 1', 'Address line 2', 'City', 'County', 'Postcode', 'Country',
+            'Phone',
+            'Part number', 'Part quantity', 'Reward preference',
+            'Attachments',
+            'Status'
+        ]);
+        foreach ($claims as $claim) {
+            $csv->insertOne([
+                $claim->id,
+                $claim->user->name, $claim->user->email,
+                $claim->company,
+                $claim->address1, $claim->address2, $claim->city, $claim->county, $claim->postcode, $claim->country,
+                $claim->phone,
+                $claim->part_number, $claim->part_quantity, $claim->reward_preference,
+                '',
+                $claim->status()
+            ]);
+        }
+        $csv->output('claims.csv');
+    }
 }

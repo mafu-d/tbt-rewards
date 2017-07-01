@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SubmissionConfirmation;
 use App\Upload;
+use App\Claim;
 
 class ClaimsController extends Controller
 {
@@ -27,6 +28,12 @@ class ClaimsController extends Controller
      */
     public function index()
     {
+        // Check whether logged in user is an administrator or not
+        if (Auth::user()->status === 1) {
+            return view('admin')->with([
+                'claims' => Claim::all()
+            ]);
+        }
         return view('dashboard')->with(['claims' => Auth::user()->claims()->where('user_id', Auth::user()->id)->get()]);
     }
 

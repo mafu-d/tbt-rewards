@@ -94,7 +94,7 @@
         <form action="{{ action('ClaimsController@submit') }}" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="id" value="{{ $claim->id }}">
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn btn-success" type="submit">Submit</button>
         </form>
     @endif
 @endsection

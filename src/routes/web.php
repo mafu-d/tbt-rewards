@@ -20,6 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
+    Route::get('/home', function() {
+        return redirect(route('home'));
+    });
     Route::get('/dashboard', 'ClaimsController@index')->name('home');
     Route::get('/claim/edit/{id?}', 'ClaimsController@claimForm');
     Route::post('/claim/save', 'ClaimsController@save');

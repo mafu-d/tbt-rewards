@@ -52,6 +52,10 @@ class ClaimsController extends Controller
         else {
             $claim = \App\Claim::findOrFail($id);
         }
+        // Reject if not the right user
+        if ($claim->user_id !== Auth::user()->id) {
+            return back()->withErrors(['msg' => 'Not allowed']);
+        }
         // Show the form
         return view('claims.edit')->with('claim', $claim);
     }
@@ -78,6 +82,10 @@ class ClaimsController extends Controller
         ]);
         // Get the claim
         $claim = \App\Claim::findOrFail($request->get('id'));
+        // Reject if not the right user
+        if ($claim->user_id !== Auth::user()->id) {
+            return back()->withErrors(['msg' => 'Not allowed']);
+        }
         // Update it
         $claim->company = $request->get('company');
         $claim->address1 = $request->get('address1');
@@ -133,6 +141,10 @@ class ClaimsController extends Controller
         ]);
         // Check the claim is actually ready for submission
         $claim = \App\Claim::findOrFail($request->get('id'));
+        // Reject if not the right user
+        if ($claim->user_id !== Auth::user()->id) {
+            return back()->withErrors(['msg' => 'Not allowed']);
+        }
         if ($claim->status !== 1) {
             return back()->withErrors(['msg' => 'Claim not ready for processing']);
         }

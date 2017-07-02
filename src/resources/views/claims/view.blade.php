@@ -48,7 +48,7 @@
                 <td>
                     <ul>
                         @foreach ($claim->attachments as $attachment)
-                            <li><a href="{{ action('ClaimsController@downloadSingle', ['id' => $attachment->id]) }}">{{ $attachment->name() }}</a></li>
+                            <li><a href="{{ action('AdminController@downloadSingle', ['id' => $attachment->id]) }}">{{ $attachment->name() }}</a></li>
                         @endforeach
                     </ul>
                 </td>

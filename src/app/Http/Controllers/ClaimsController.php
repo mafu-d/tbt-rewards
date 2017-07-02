@@ -204,10 +204,31 @@ class ClaimsController extends Controller
                 $claim->address1, $claim->address2, $claim->city, $claim->county, $claim->postcode, $claim->country,
                 $claim->phone,
                 $claim->part_number, $claim->part_quantity, $claim->reward_preference,
-                '',
+                action('ClaimsController@downloadAttachments', ['id' => $claim->id]),
                 $claim->status()
             ]);
         }
         $csv->output('claims.csv');
+    }
+
+    /**
+    * Zip and download all attachments for the specified claim
+    **/
+    public function downloadAttachments($id) {
+        // Check for admin
+        if (Auth::user()->status !== 1) {
+            return back()->withErrors(['msg' => 'Not available']);
+        }
+        // Find claim
+        $claim = Claim::findOrFail($id);
+        // Create zip file
+        $zip = new \Chumper\Zipper\Zipper;
+        $zip->make('storage/app/zips/' . $id . '.zip');
+        foreach ($claim->uploads as $upload) {
+            $zip->add(storage_path('app/') . $upload->filename);
+        }
+        $zip->close();
+        // Download it
+        return response()->download('storage/app/zips/' . $id . '.zip');
     }
 }

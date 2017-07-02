@@ -8,8 +8,9 @@
 </head>
 <body>
     <p>Dear {{ $claim->user->name }},</p>
-    <p>Thank you for your claim submission. Your claim (#{{ $claim->id }}) has been received and will be processed shortly.</p>
+    <p><strong>Claim ID: {{ $claim->id }}</strong></p>
+    <p>Thank you for completing your details and submitting your documentation. Your information is being verified and we will be in touch within 14 days.</p>
     <p>Regards</p>
-    <p>Lenovo Rewards Team</p>
+    <p>The Lenovo Rewards Team</p>
 </body>
 </html>

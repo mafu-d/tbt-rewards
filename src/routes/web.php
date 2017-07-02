@@ -19,12 +19,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function() {
-    Route::get('/home', function() {
-        return redirect(route('home'));
-    });
-    Route::get('/dashboard', 'ClaimsController@index')->name('home');
-    Route::get('/claim/edit/{id?}', 'ClaimsController@claimForm');
-    Route::post('/claim/save', 'ClaimsController@save');
-    Route::post('/claim/submit', 'ClaimsController@submit');
+Route::get('/home', function() {
+    return redirect(route('home'));
 });
+Route::get('/dashboard', 'ClaimsController@index')->name('home');
+Route::get('/claim/edit/{id?}', 'ClaimsController@claimForm');
+Route::post('/claim/save', 'ClaimsController@save');
+Route::post('/claim/submit', 'ClaimsController@submit');
+Route::get('/claim/view/{id}', 'AdminController@view');
+Route::get('/attachment/{id}', 'AdminController@downloadSingle');
+Route::get('/download/all', 'AdminController@downloadClaims');
+Route::get('/download/{id}', 'AdminController@downloadAttachments');

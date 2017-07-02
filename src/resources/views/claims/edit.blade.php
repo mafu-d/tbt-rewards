@@ -61,9 +61,9 @@
                 <p>
                     <label for="reward_preference">Preferred reward</label>
                     <select name="reward_preference" id="reward_preference" class="form-control">
-                        <option value="1" {{ $claim->reward_preference === '1' ? 'selected' : '' }}>&pound;250 Amazon vouchers</option>
-                        <option value="2" {{ $claim->reward_preference === '2' ? 'selected' : '' }}>London Theatre Weekend voucher</option>
-                        <option value="3" {{ $claim->reward_preference === '3' ? 'selected' : '' }}>Lenovo Tab3 10 Business Tablet</option>
+                        @foreach (\App\Claim::$reward_preferences as $key => $value)
+                            <option value="{{ $key }}" {{ $claim->reward_preference == $key ? 'selected' : '' }}>{{ $value }}</option>
+                        @endforeach
                     </select>
                 </p>
                 <p>
@@ -72,9 +72,9 @@
             </div>
             <div class="col-md-4">
                 <h4>Upload supporting documents</h4>
-                <input type="hidden" name="removeUpload" value="">
-                @foreach ($claim->uploads as $upload)
-                    <p><button class="btn btn-danger btn-xs remove-upload-btn" data-id="{{ $upload->id }}"><span class="glyphicon glyphicon-remove"></span></button> {{ preg_replace('/^uploads\/[0-9]+_/', '', $upload->filename) }}</p>
+                <input type="hidden" name="removeAttachment" value="">
+                @foreach ($claim->attachments as $attachment)
+                    <p><button class="btn btn-danger btn-xs remove-upload-btn" data-id="{{ $attachment->id }}"><span class="glyphicon glyphicon-remove"></span></button> {{ $attachment->name() }}</p>
                 @endforeach
                 <p>
                     <label class="btn btn-primary" for="my-file-selector">

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SubmissionConfirmation;
-use App\Upload;
+use App\Attachment;
+use App\Claim;
 
 class ClaimsController extends Controller
 {
@@ -27,6 +28,12 @@ class ClaimsController extends Controller
      */
     public function index()
     {
+        // Check whether logged in user is an administrator or not
+        if (Auth::user()->status === 1) {
+            return view('admin')->with([
+                'claims' => Claim::all()
+            ]);
+        }
         return view('dashboard')->with(['claims' => Auth::user()->claims()->where('user_id', Auth::user()->id)->get()]);
     }
 
@@ -84,24 +91,24 @@ class ClaimsController extends Controller
         $claim->part_quantity = $request->get('part_quantity');
         $claim->reward_preference =$request->get('reward_preference');
         // Remove file if necessary
-        if ($request->get('removeUpload')) {
-            Upload::findOrFail($request->get('removeUpload'))->delete();
+        if ($request->get('removeAttachment')) {
+            Attachment::findOrFail($request->get('removeAttachment'))->delete();
         }
         // Handle file upload if requested
         if ($request->hasFile('file')) {
             // Delete if already exists with that filename
-            if (file_exists(storage_path('app/public/uploads') . $request->file->getClientOriginalName())) {
-                unlink(storage_path('app/public/uploads') . $request->file->getClientOriginalName());
+            if (file_exists(storage_path('app/public/attachments') . $request->file->getClientOriginalName())) {
+                unlink(storage_path('app/public/attachments') . $request->file->getClientOriginalName());
             }
             // Store the new file
-            $path = $request->file->storeAs('uploads', $claim->id . '_' . $request->file->getClientOriginalName());
+            $path = $request->file->storeAs('attachments', $claim->id . '_' . $request->file->getClientOriginalName());
             // Add the new file to the claim if it doesn't already exist
-            $upload = Upload::where('filename', '=', $path);
-            if (!$upload->count()) {
-                $upload = new Upload();
-                $upload->claim_id = $claim->id;
-                $upload->filename = $path;
-                $upload->save();
+            $attachment = Attachment::where('filename', '=', $path);
+            if (!$attachment->count()) {
+                $attachment = new Attachment();
+                $attachment->claim_id = $claim->id;
+                $attachment->filename = $path;
+                $attachment->save();
             }
         }
         // Check submission validity

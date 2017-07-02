@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Upload extends Model
+class Attachment extends Model
 {
-    // Each upload is related to just one claim
+    // Each attachment is related to just one claim
     public function claim() {
         return $this->belongsTo('\App\Claim');
     }
@@ -19,6 +19,6 @@ class Upload extends Model
 
     // Friendly display of file name
     public function name() {
-        return preg_replace('/^uploads\/[0-9]+_/', '', $this->filename);
+        return preg_replace('/^(attachments|uploads)\/[0-9]+_/', '', $this->filename);
     }
 }

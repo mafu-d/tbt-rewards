@@ -72,9 +72,9 @@
             </div>
             <div class="col-md-4">
                 <h4>Upload supporting documents</h4>
-                <input type="hidden" name="removeUpload" value="">
-                @foreach ($claim->uploads as $upload)
-                    <p><button class="btn btn-danger btn-xs remove-upload-btn" data-id="{{ $upload->id }}"><span class="glyphicon glyphicon-remove"></span></button> {{ $upload->name() }}</p>
+                <input type="hidden" name="removeAttachment" value="">
+                @foreach ($claim->attachments as $attachment)
+                    <p><button class="btn btn-danger btn-xs remove-upload-btn" data-id="{{ $attachment->id }}"><span class="glyphicon glyphicon-remove"></span></button> {{ $attachment->name() }}</p>
                 @endforeach
                 <p>
                     <label class="btn btn-primary" for="my-file-selector">

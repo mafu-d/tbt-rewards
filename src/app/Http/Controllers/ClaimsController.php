@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SubmissionConfirmation;
-use App\Upload;
+use App\Attachment;
 use App\Claim;
 
 class ClaimsController extends Controller
@@ -91,24 +91,24 @@ class ClaimsController extends Controller
         $claim->part_quantity = $request->get('part_quantity');
         $claim->reward_preference =$request->get('reward_preference');
         // Remove file if necessary
-        if ($request->get('removeUpload')) {
-            Upload::findOrFail($request->get('removeUpload'))->delete();
+        if ($request->get('removeAttachment')) {
+            Attachment::findOrFail($request->get('removeAttachment'))->delete();
         }
         // Handle file upload if requested
         if ($request->hasFile('file')) {
             // Delete if already exists with that filename
-            if (file_exists(storage_path('app/public/uploads') . $request->file->getClientOriginalName())) {
-                unlink(storage_path('app/public/uploads') . $request->file->getClientOriginalName());
+            if (file_exists(storage_path('app/public/attachments') . $request->file->getClientOriginalName())) {
+                unlink(storage_path('app/public/attachments') . $request->file->getClientOriginalName());
             }
             // Store the new file
-            $path = $request->file->storeAs('uploads', $claim->id . '_' . $request->file->getClientOriginalName());
+            $path = $request->file->storeAs('attachments', $claim->id . '_' . $request->file->getClientOriginalName());
             // Add the new file to the claim if it doesn't already exist
-            $upload = Upload::where('filename', '=', $path);
-            if (!$upload->count()) {
-                $upload = new Upload();
-                $upload->claim_id = $claim->id;
-                $upload->filename = $path;
-                $upload->save();
+            $attachment = Attachment::where('filename', '=', $path);
+            if (!$attachment->count()) {
+                $attachment = new Attachment();
+                $attachment->claim_id = $claim->id;
+                $attachment->filename = $path;
+                $attachment->save();
             }
         }
         // Check submission validity
@@ -169,9 +169,9 @@ class ClaimsController extends Controller
             return back()->withErrors(['msg' => 'Not available']);
         }
         // Find upload
-        $upload = Upload::findOrFail($id);
+        $attachment = Attachment::findOrFail($id);
         // Return it as a download
-        return response()->download(storage_path('app/') . $upload->filename);
+        return response()->download(storage_path('app/') . $attachment->filename);
     }
 
     /**
@@ -224,8 +224,8 @@ class ClaimsController extends Controller
         // Create zip file
         $zip = new \Chumper\Zipper\Zipper;
         $zip->make('storage/app/zips/' . $id . '.zip');
-        foreach ($claim->uploads as $upload) {
-            $zip->add(storage_path('app/') . $upload->filename);
+        foreach ($claim->attachments as $attachment) {
+            $zip->add(storage_path('app/') . $attachment->filename);
         }
         $zip->close();
         // Download it

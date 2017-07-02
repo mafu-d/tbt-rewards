@@ -18,7 +18,7 @@ class Claim extends Model
         'London Theatre Weekend voucher',
         'Lenovo Tab3 10 Business Tablet'
     ];
-    
+
     // Check current status
     public function status() {
         return self::$statusTexts[$this->status];
@@ -30,7 +30,7 @@ class Claim extends Model
     }
 
     // Each claim can have multiple uploads
-    public function uploads() {
-        return $this->hasMany('\App\Upload', 'claim_id', 'id');
+    public function attachments() {
+        return $this->hasMany('\App\Attachment', 'claim_id', 'id');
     }
 }
